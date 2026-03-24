@@ -9,7 +9,6 @@ import GitHub from './components/GitHub/GitHub';
 import Projects from './components/Projects/Projects';
 import Testimonials from './components/Testimonials/Testimonials';
 import Feedback from './components/Feedback/Feedback';
-import FeedbackDisplay from './components/FeedbackDisplay/FeedbackDisplay';
 import Certifications from './components/Certifications/Certifications';
 import Services from './components/Services/Services';
 import Experience from './components/Experience/Experience';
@@ -87,7 +86,6 @@ function App() {
             <Certifications />
             <Services />
             <Contact />
-            <FeedbackDisplay />
           </main>
         } />
         <Route path="/admin-feedback" element={<AdminFeedback />} />
