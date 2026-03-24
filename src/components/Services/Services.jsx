@@ -37,52 +37,57 @@ const services = [
 
 const Services = () => {
     return (
-        <section id="services" className="py-20 bg-slate-900 relative">
-            {/* Background Gradients */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div className="absolute top-[10%] left-[20%] w-96 h-96 bg-cyan-500/5 rounded-full blur-[100px]"></div>
-                <div className="absolute bottom-[10%] right-[20%] w-96 h-96 bg-blue-500/5 rounded-full blur-[100px]"></div>
-            </div>
-
+        <section id="services" className="py-24 relative overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
+            
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="flex flex-col items-center mb-16"
+                    className="flex flex-col items-center mb-20 text-center"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4">
-                        What I Offer
+                    <h2 className="text-sm font-bold text-cyan-500 dark:text-cyan-400 tracking-[0.3em] uppercase mb-4">
+                        Solutions
                     </h2>
-                    <div className="w-20 h-1 bg-blue-500 rounded-full"></div>
-                    <p className="mt-4 text-slate-400 text-center max-w-2xl">
-                        I provide a wide range of services to help you build and grow your digital presence.
+                    <h3 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+                        What I Offer
+                    </h3>
+                    <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
+                    <p className="text-slate-600 dark:text-slate-400 max-w-2xl text-lg font-light">
+                        I provide a wide range of top-tier services to help you build, deploy, and scale your digital presence.
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
                     {services.map((service, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            whileHover={{ y: -5 }}
-                            className="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-cyan-500/50 hover:bg-slate-800 transition-all group"
+                            transition={{ duration: 0.7, delay: index * 0.1 }}
+                            className="glass dark:glass-dark p-10 rounded-[3rem] border-white/20 dark:border-slate-700/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all group relative overflow-hidden"
                         >
-                            <div className="w-16 h-16 bg-slate-900 rounded-xl flex items-center justify-center text-3xl text-cyan-400 mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-cyan-500/20">
+                            <div className="absolute -right-4 -top-4 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors"></div>
+                            
+                            <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl text-white mb-10 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl shadow-cyan-500/20">
                                 {service.icon}
                             </div>
 
-                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
+                            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 transition-colors tracking-tight">
                                 {service.title}
                             </h3>
 
-                            <p className="text-slate-400 leading-relaxed text-sm">
+                            <p className="text-slate-600 dark:text-slate-400 leading-relaxed text-base font-medium">
                                 {service.description}
                             </p>
+                            
+                            <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800/50 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Premium Service</span>
+                            </div>
                         </motion.div>
                     ))}
                 </div>

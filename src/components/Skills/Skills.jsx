@@ -14,44 +14,52 @@ const skills = [
 
 const Skills = () => {
     return (
-        <section id="skills" className="py-20">
-            <div className="container mx-auto px-6">
+        <section id="skills" className="py-24 relative overflow-hidden">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
+            
+            <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                 >
-                    <div className="flex flex-col items-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4">
-                            My Skills
+                    <div className="flex flex-col items-center mb-20 text-center">
+                        <h2 className="text-sm font-bold text-cyan-500 dark:text-cyan-400 tracking-[0.3em] uppercase mb-4">
+                            Expertise
                         </h2>
-                        <div className="w-20 h-1 bg-blue-500 rounded-full"></div>
+                        <h3 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
+                            My Skills
+                        </h3>
+                        <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
+                        <p className="text-slate-600 dark:text-slate-400 max-w-2xl text-lg font-light">
+                            A comprehensive overview of my technical stack and proficiency across various modern technologies.
+                        </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {skills.map((skill, index) => (
                             <motion.div
                                 key={skill.name}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="bg-slate-800 p-6 rounded-xl border border-slate-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/10 transition-all group"
+                                transition={{ duration: 0.5, delay: index * 0.05 }}
+                                className="glass dark:glass-dark p-8 rounded-[2rem] border-white/20 dark:border-slate-700/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all group"
                             >
-                                <div className="flex justify-between items-end mb-4">
-                                    <h3 className="text-lg font-medium text-white group-hover:text-cyan-400 transition-colors">
+                                <div className="flex justify-between items-end mb-6">
+                                    <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-cyan-500 transition-colors tracking-tight">
                                         {skill.name}
                                     </h3>
-                                    <span className="text-slate-400 text-sm">{skill.level}%</span>
+                                    <span className="text-cyan-600 dark:text-cyan-400 text-xs font-black uppercase tracking-wider">{skill.level}%</span>
                                 </div>
-                                <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                                <div className="w-full bg-slate-100 dark:bg-slate-800/50 h-2.5 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/30">
                                     <motion.div
                                         initial={{ width: 0 }}
                                         whileInView={{ width: `${skill.level}%` }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 1, delay: 0.5 }}
-                                        className={`h-full ${skill.color} rounded-full`}
+                                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+                                        className={`h-full ${skill.color} rounded-full shadow-[0_0_10px_rgba(34,211,238,0.3)]`}
                                     ></motion.div>
                                 </div>
                             </motion.div>
