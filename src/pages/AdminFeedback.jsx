@@ -341,22 +341,22 @@ const AdminFeedback = () => {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex flex-wrap gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
                     <button 
                         onClick={() => setActiveTab('requests')}
-                        className={`px-6 py-3 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${activeTab === 'requests' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'requests' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Client Requests ({requests.length})
                     </button>
                     <button 
                         onClick={() => setActiveTab('feedback')}
-                        className={`px-6 py-3 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${activeTab === 'feedback' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'feedback' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Feedback ({feedbacks.length})
                     </button>
                     <button 
                         onClick={() => setActiveTab('resume')}
-                        className={`px-6 py-3 rounded-2xl font-black text-sm uppercase tracking-widest transition-all ${activeTab === 'resume' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'resume' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Resume Manager
                     </button>
@@ -377,7 +377,7 @@ const AdminFeedback = () => {
                                 >
                                     <div className="flex-1 w-full">
                                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-slate-200 dark:border-slate-800 pb-4">
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                                                 <h3 className="font-black text-2xl text-slate-900 dark:text-white">{item.name}</h3>
                                                 <a href={`mailto:${item.email}`} className="text-xs text-slate-400 hover:text-cyan-500 transition-colors cursor-pointer" title="Click to email">({item.email})</a>
                                                 {item.contact_number && (
@@ -407,7 +407,7 @@ const AdminFeedback = () => {
                                                 Received on {new Date(item.created_at).toLocaleDateString()}
                                             </p>
                                             
-                                            <div className="flex gap-3">
+                                            <div className="flex flex-wrap gap-2 w-full sm:w-auto justify-end">
                                                 <button
                                                     onClick={() => {
                                                         setReplyingTo(item);
@@ -458,7 +458,7 @@ const AdminFeedback = () => {
                                     className="glass dark:glass-dark p-8 rounded-[2.5rem] border-white/20 dark:border-slate-700/50 flex flex-col md:flex-row gap-8 items-start md:items-center"
                                 >
                                     <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-2">
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                                             <h3 className="font-black text-xl text-slate-900 dark:text-white">{item.name}</h3>
                                             <a href={`mailto:${item.email}`} className="text-xs text-slate-400 hover:text-cyan-500 transition-colors cursor-pointer" title="Click to email">({item.email})</a>
                                         </div>
@@ -472,7 +472,7 @@ const AdminFeedback = () => {
                                             Submitted on {new Date(item.created_at).toLocaleDateString()}
                                         </p>
                                     </div>
-                                    <div className="flex gap-3 w-full md:w-auto">
+                                    <div className="flex flex-wrap gap-2 w-full md:w-auto mt-4 md:mt-0 justify-end">
                                         <button
                                             onClick={() => toggleApproval(item.id, item.approved)}
                                             className={`flex-1 md:flex-none px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
@@ -498,11 +498,11 @@ const AdminFeedback = () => {
                 )}
 
                 {activeTab === 'resume' && (
-                    <div className="glass dark:glass-dark p-12 rounded-[3rem] border-white/20 dark:border-slate-700/50 max-w-2xl mx-auto">
+                    <div className="glass dark:glass-dark p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border-white/20 dark:border-slate-700/50 max-w-2xl mx-auto">
                         <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Resume Manager</h2>
                         
                         <div className="mb-10 p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl">
-                            <div className="flex items-center justify-between mb-4">
+                            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-500">
                                         <FaFilePdf size={24} />
@@ -552,15 +552,15 @@ const AdminFeedback = () => {
 
             {/* Email Reply Modal */}
             {replyModalOpen && replyingTo && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/80 backdrop-blur-sm">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/80 backdrop-blur-sm">
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="glass dark:glass-dark p-8 md:p-12 rounded-[3rem] w-full max-w-2xl border-white/20 dark:border-slate-700/50 relative"
+                        className="glass dark:glass-dark p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] w-full max-w-2xl border-white/20 dark:border-slate-700/50 relative max-h-[90vh] overflow-y-auto"
                     >
                         <button 
                             onClick={() => setReplyModalOpen(false)}
-                            className="absolute top-8 right-8 w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                            className="absolute top-4 right-4 md:top-8 md:right-8 w-10 h-10 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
                         >
                             <FaTimes />
                         </button>
@@ -585,18 +585,18 @@ const AdminFeedback = () => {
                                 ></textarea>
                             </div>
                             
-                            <div className="flex gap-4">
+                            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
                                 <button
                                     type="button"
                                     onClick={() => setReplyModalOpen(false)}
-                                    className="px-8 py-4 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black uppercase tracking-widest rounded-2xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-xs"
+                                    className="w-full sm:w-auto px-8 py-4 bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black uppercase tracking-widest rounded-2xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-xs"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={isSendingReply}
-                                    className="flex-1 py-4 bg-cyan-500 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-xs"
+                                    className="w-full sm:flex-1 py-4 bg-cyan-500 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-xs"
                                 >
                                     {isSendingReply ? 'Sending...' : <><FaPaperPlane /> Send Email</>}
                                 </button>
