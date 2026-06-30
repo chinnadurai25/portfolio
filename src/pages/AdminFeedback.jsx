@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaTrash, FaCheck, FaTimes, FaLock, FaStar, FaSignOutAlt, FaUpload, FaFilePdf, FaEnvelope, FaPaperPlane } from 'react-icons/fa';
+import { FaTrash, FaCheck, FaTimes, FaLock, FaStar, FaSignOutAlt, FaUpload, FaFilePdf, FaEnvelope, FaPaperPlane, FaPhone } from 'react-icons/fa';
 import { supabase } from '../supabase';
 import emailjs from '@emailjs/browser';
 
@@ -379,6 +379,16 @@ const AdminFeedback = () => {
                                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 border-b border-slate-200 dark:border-slate-800 pb-4">
                                             <div className="flex items-center gap-3">
                                                 <h3 className="font-black text-2xl text-slate-900 dark:text-white">{item.name}</h3>
+                                                <a href={`mailto:${item.email}`} className="text-xs text-slate-400 hover:text-cyan-500 transition-colors cursor-pointer" title="Click to email">({item.email})</a>
+                                                {item.contact_number && (
+                                                    <a 
+                                                        href={`tel:${item.contact_number}`} 
+                                                        className="text-xs text-slate-400 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center gap-2 hover:bg-cyan-500/10 hover:text-cyan-500 transition-colors cursor-pointer"
+                                                        title="Click to call"
+                                                    >
+                                                        <FaPhone className="text-[10px]" /> {item.contact_number}
+                                                    </a>
+                                                )}
                                             </div>
                                             <span className="inline-block px-4 py-1.5 bg-blue-500/10 text-blue-500 dark:text-blue-400 rounded-full text-xs font-black uppercase tracking-widest border border-blue-500/20">
                                                 {item.service_type}
@@ -450,7 +460,7 @@ const AdminFeedback = () => {
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
                                             <h3 className="font-black text-xl text-slate-900 dark:text-white">{item.name}</h3>
-                                            <span className="text-xs text-slate-400">({item.email})</span>
+                                            <a href={`mailto:${item.email}`} className="text-xs text-slate-400 hover:text-cyan-500 transition-colors cursor-pointer" title="Click to email">({item.email})</a>
                                         </div>
                                         <div className="flex gap-1 mb-4">
                                             {[...Array(item.rating)].map((_, i) => (

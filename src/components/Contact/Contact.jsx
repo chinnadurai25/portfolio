@@ -8,6 +8,7 @@ const Contact = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        contact_number: '',
         service_type: 'Web Development',
         message: ''
     });
@@ -28,7 +29,7 @@ const Contact = () => {
             if (error) throw error;
 
             setStatus('success');
-            setFormData({ name: '', email: '', service_type: 'Web Development', message: '' });
+            setFormData({ name: '', email: '', contact_number: '', service_type: 'Web Development', message: '' });
             setTimeout(() => setStatus(''), 5000);
         } catch (error) {
             console.error("Error submitting request:", error);
@@ -150,6 +151,18 @@ const Contact = () => {
                                     value={formData.email}
                                     onChange={handleChange}
                                     placeholder="Enter your email"
+                                    required
+                                    className="w-full px-6 py-4 bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-2xl focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 text-slate-900 dark:text-white placeholder-slate-400 transition-all focus:ring-4 focus:ring-cyan-500/10 font-medium"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black uppercase tracking-widest ml-4 text-slate-400">Contact Number</label>
+                                <input
+                                    type="tel"
+                                    name="contact_number"
+                                    value={formData.contact_number}
+                                    onChange={handleChange}
+                                    placeholder="Enter your phone number"
                                     required
                                     className="w-full px-6 py-4 bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 rounded-2xl focus:outline-none focus:border-cyan-500 dark:focus:border-cyan-400 text-slate-900 dark:text-white placeholder-slate-400 transition-all focus:ring-4 focus:ring-cyan-500/10 font-medium"
                                 />
