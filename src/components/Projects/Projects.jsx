@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaGithub, FaArrowRight } from "react-icons/fa";
+import { FaGithub, FaArrowRight, FaExternalLinkAlt } from "react-icons/fa";
 import ProjectModal from "./ProjectModal";
 
 const projects = [
@@ -135,12 +135,24 @@ const Projects = () => {
                                                 href={project.github}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="p-3 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white hover:bg-cyan-500 dark:hover:bg-cyan-500 shadow-lg shadow-slate-900/10 transition-all transform hover:scale-110"
+                                                className="p-3 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white hover:bg-cyan-500 dark:hover:bg-cyan-500 shadow-lg shadow-slate-900/10 transition-all transform hover:scale-110 flex items-center justify-center"
                                                 onClick={(e) => e.stopPropagation()}
                                                 title="View Source Code"
                                             >
                                                 <FaGithub size={18} />
                                             </a>
+                                            {project.live && project.live !== "#" && (
+                                                <a
+                                                    href={project.live}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="p-3 rounded-2xl bg-cyan-500 text-white hover:bg-cyan-600 shadow-lg shadow-cyan-500/20 transition-all transform hover:scale-110 flex items-center justify-center"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    title="Live Demo"
+                                                >
+                                                    <FaExternalLinkAlt size={16} />
+                                                </a>
+                                            )}
                                         </div>
                                         <button className="text-cyan-600 dark:text-cyan-400 text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 group/btn">
                                             Details <div className="w-8 h-8 rounded-full bg-cyan-50 dark:bg-cyan-900/30 flex items-center justify-center group-hover/btn:bg-cyan-500 group-hover/btn:text-white transition-all"><FaArrowRight className="text-[10px]" /></div>

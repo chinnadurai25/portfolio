@@ -6,21 +6,21 @@ const education = [
     {
         degree: "Bachelor's Degree",
         institution: "Kamaraj College of Engineering and Technology",
-        period: "06/2022 - 06/2026",
-        description: "Pursuing B.E. in Computer Science. CGPA: 8.2/10",
-        status: "Pursuing"
+        period: "10/2022 - 12/2026",
+        description: "Completed B.E. in Computer Science. CGPA: 8.2/10",
+        status: "Completed"
     },
     {
         degree: "Higher Secondary",
         institution: "Sharon Matric Higher Secondary School",
-        period: "04/2021 - 06/2022",
+        period: "06/2021 - 04/2022",
         description: "Completed with 74% in HSC.",
         status: "Completed"
     },
     {
         degree: "Secondary School",
         institution: "Sharon Matric Higher Secondary School",
-        period: "04/2020 - 06/2021",
+        period: "06/2019 - 04/2020",
         description: "Completed with 65% in SSLC.",
         status: "Completed"
     }
@@ -30,7 +30,7 @@ const Education = () => {
     return (
         <section id="education" className="py-24 relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
-            
+
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -84,11 +84,10 @@ const Education = () => {
                                         <FaCalendarAlt className="mr-2 text-cyan-500" />
                                         <span>{edu.period}</span>
                                     </div>
-                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full border shadow-sm ${
-                                        edu.status === "Pursuing" 
-                                        ? "text-blue-500 bg-blue-500/10 border-blue-500/20" 
+                                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] px-4 py-2 rounded-full border shadow-sm ${edu.status === "Pursuing"
+                                        ? "text-blue-500 bg-blue-500/10 border-blue-500/20"
                                         : "text-green-500 bg-green-500/10 border-green-500/20"
-                                    }`}>
+                                        }`}>
                                         {edu.status}
                                     </span>
                                 </div>

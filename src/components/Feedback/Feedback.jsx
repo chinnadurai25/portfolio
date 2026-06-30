@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { FaStar } from 'react-icons/fa';
+import { supabase } from '../../supabase';
 
 const Feedback = () => {
     const [rating, setRating] = useState(5);
@@ -20,6 +21,36 @@ const Feedback = () => {
         e.preventDefault();
         setStatus('sending');
 
+        try {
+            const { error } = await supabase.from('feedback').insert([{
+                ...formData,
+                rating,
+                approved: false
+            }]);
+
+            if (error) throw error;
+            
+            setStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+            setRating(5);
+            setTimeout(() => setStatus(''), 5000);
+        } catch (error) {
+            console.error("Error submitting feedback to Supabase:", error);
+            setStatus('error');
+            setTimeout(() => setStatus(''), 5000);
+        }
+
+        /*
+        // Firebase integration coming soon
+        setTimeout(() => {
+            setStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+            setRating(5);
+            alert("Feedback system is currently being migrated to Firebase. Your feedback will be saved soon!");
+            setTimeout(() => setStatus(''), 5000);
+        }, 1000);
+
+        /*
         try {
             const response = await fetch("http://localhost:5000/api/feedback", {
                 method: "POST",
@@ -48,6 +79,7 @@ const Feedback = () => {
             setStatus('error');
             setTimeout(() => setStatus(''), 5000);
         }
+        */
     };
 
     return (

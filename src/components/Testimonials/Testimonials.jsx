@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
+import { supabase } from "../../supabase";
 
 const Testimonials = () => {
     const [testimonials, setTestimonials] = useState([]);
@@ -9,17 +10,33 @@ const Testimonials = () => {
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/feedback");
-                const data = await response.json();
-                setTestimonials(data);
-                setLoading(false);
+                const { data, error } = await supabase
+                    .from('feedback')
+                    .select('*')
+                    .eq('approved', true)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                if (data) setTestimonials(data);
             } catch (error) {
                 console.error("Error fetching testimonials:", error);
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchTestimonials();
+
+        const channel = supabase
+            .channel('public:feedback')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'feedback', filter: 'approved=eq.true' }, () => {
+                fetchTestimonials();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
 
     if (loading) {
@@ -59,7 +76,7 @@ const Testimonials = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
                     {testimonials.map((item, index) => (
                         <motion.div
-                            key={item._id || index}
+                            key={item.id || index}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}

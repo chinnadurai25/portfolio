@@ -4,24 +4,10 @@ import { motion } from "framer-motion";
 const experiences = [
     {
         id: 1,
-        role: "Senior Front-End Developer",
-        company: "Tech Solutions Inc.",
-        period: "2023 - Present",
-        description: "Leading the frontend team in rebuilding the core platform using Next.js and Tailwind CSS. Improved performance by 40%."
-    },
-    {
-        id: 2,
-        role: "Web Developer",
-        company: "Creative Agency",
-        period: "2021 - 2023",
-        description: "Developed responsive websites for various clients. Collaborated with designers to implement pixel-perfect user interfaces."
-    },
-    {
-        id: 3,
-        role: "Junior Developer",
-        company: "StartUp Hub",
-        period: "2020 - 2021",
-        description: "Assisted in backend development using Node.js and Express. Fixed bugs and implemented minor features."
+        role: "Full Stack Developer",
+        company: "FlyTowards Digital Innovation (Sankarankovil)",
+        period: "Dec 2025 - Present",
+        description: "Currently working as a core developer at this dynamic startup company. I have hands-on experience architecting, building, and maintaining more than 5 live projects that are successfully deployed and actively running in production environments. My daily work involves end-to-end full stack development, implementing responsive UI designs, and ensuring applications are highly performant and scalable."
     }
 ];
 

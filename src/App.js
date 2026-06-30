@@ -7,6 +7,7 @@ import Education from './components/Education/Education';
 import Skills from './components/Skills/Skills';
 import GitHub from './components/GitHub/GitHub';
 import Projects from './components/Projects/Projects';
+import LiveProjects from './components/Projects/LiveProjects';
 import Testimonials from './components/Testimonials/Testimonials';
 import Feedback from './components/Feedback/Feedback';
 import Certifications from './components/Certifications/Certifications';
@@ -20,7 +21,9 @@ import './App.css';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -31,7 +34,9 @@ function App() {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   useEffect(() => {
@@ -80,6 +85,7 @@ function App() {
             <Skills />
             <GitHub />
             <Projects />
+            <LiveProjects />
             <Experience />
             <Testimonials />
             <Feedback />
@@ -89,6 +95,7 @@ function App() {
           </main>
         } />
         <Route path="/admin-feedback" element={<AdminFeedback />} />
+        <Route path="/admin" element={<AdminFeedback />} />
       </Routes>
 
       <Footer />
