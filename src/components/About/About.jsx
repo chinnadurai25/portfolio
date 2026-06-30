@@ -5,7 +5,7 @@ const About = () => {
     return (
         <section id="about" className="py-24 relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
-            
+
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -52,11 +52,11 @@ const About = () => {
                                 maintainable code and staying updated with the latest industry
                                 trends.
                             </p>
-                            
+
                             <div className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100 dark:border-slate-800/50">
                                 <div className="p-6 glass dark:glass-dark rounded-3xl border-white/20 dark:border-slate-700/50 hover:shadow-xl hover:shadow-cyan-500/5 transition-all group/box">
-                                    <h4 className="text-4xl font-black text-cyan-600 dark:text-cyan-400 mb-2 group-hover/box:scale-110 transition-transform">2+</h4>
-                                    <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-500">Years Experience</span>
+                                    <h4 className="text-4xl font-black text-cyan-600 dark:text-cyan-400 mb-2 group-hover/box:scale-110 transition-transform">7 Months+</h4>
+                                    <span className="text-xs font-black uppercase tracking-widest text-slate-500 dark:text-slate-500">Work Experience</span>
                                 </div>
                                 <div className="p-6 glass dark:glass-dark rounded-3xl border-white/20 dark:border-slate-700/50 hover:shadow-xl hover:shadow-blue-500/5 transition-all group/box">
                                     <h4 className="text-4xl font-black text-blue-600 dark:text-blue-400 mb-2 group-hover/box:scale-110 transition-transform">10+</h4>
