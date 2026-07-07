@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaTrash, FaCheck, FaTimes, FaLock, FaStar, FaSignOutAlt, FaUpload, FaFilePdf, FaEnvelope, FaPaperPlane, FaPhone } from 'react-icons/fa';
-import { supabase } from '../supabase';
+import { FaTrash, FaCheck, FaTimes, FaLock, FaStar, FaSignOutAlt, FaEnvelope, FaPaperPlane, FaPhone } from 'react-icons/fa';
+import { supabase } from '../../supabase';
 import emailjs from '@emailjs/browser';
+import AdminProjects from './components/AdminProjects';
+import AdminExperience from './components/AdminExperience';
+import AdminSkills from './components/AdminSkills';
+import AdminArticles from './components/AdminArticles';
+import AdminResumes from './components/AdminResumes';
 
-const AdminFeedback = () => {
+const AdminDashboard = () => {
     const [feedbacks, setFeedbacks] = useState([]);
     const [requests, setRequests] = useState([]);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,9 +19,6 @@ const AdminFeedback = () => {
     
     // Resume feature states
     const [activeTab, setActiveTab] = useState('requests');
-    const [resumeFile, setResumeFile] = useState(null);
-    const [isUploading, setIsUploading] = useState(false);
-    const [resumeUrl, setResumeUrl] = useState(null);
 
     // EmailJS Reply Modal states
     const [replyModalOpen, setReplyModalOpen] = useState(false);
@@ -65,27 +67,11 @@ const AdminFeedback = () => {
         }
     };
 
-    const fetchResume = async () => {
-        try {
-            const { data } = await supabase
-                .from('settings')
-                .select('url')
-                .eq('id', 'resume')
-                .single();
-            if (data && data.url) {
-                setResumeUrl(data.url);
-            }
-        } catch (error) {
-            console.error("Error fetching resume URL:", error);
-        }
-    };
-
     useEffect(() => {
         if (!isAuthenticated) return;
 
         fetchFeedbacks();
         fetchRequests();
-        fetchResume();
 
         // Subscribe to real-time feedback changes
         const feedbackChannel = supabase
@@ -222,67 +208,6 @@ const AdminFeedback = () => {
         }
     };
 
-    const handleResumeUpload = async (e) => {
-        e.preventDefault();
-        if (!resumeFile) return;
-
-        setIsUploading(true);
-        
-        try {
-            const fileName = `${Date.now()}_${resumeFile.name.replace(/[^a-zA-Z0-9.\-_]/g, '')}`;
-            const filePath = `resumes/${fileName}`;
-
-            const { error: uploadError } = await supabase.storage
-                .from('resumes')
-                .upload(filePath, resumeFile, { upsert: true });
-
-            if (uploadError) throw uploadError;
-
-            const { data } = supabase.storage.from('resumes').getPublicUrl(filePath);
-            const downloadURL = data.publicUrl;
-
-            const { error: dbError } = await supabase
-                .from('settings')
-                .upsert({ id: 'resume', url: downloadURL, path: filePath });
-
-            if (dbError) throw dbError;
-
-            setResumeUrl(downloadURL);
-            setResumeFile(null);
-            alert("Resume uploaded successfully!");
-        } catch (error) {
-            console.error("Upload error:", error);
-            alert("Failed to upload resume.");
-        } finally {
-            setIsUploading(false);
-        }
-    };
-
-    const handleDeleteResume = async () => {
-        if (!window.confirm("Are you sure you want to delete the current resume? This cannot be undone.")) return;
-        
-        try {
-            const { data: resumeData } = await supabase
-                .from('settings')
-                .select('path')
-                .eq('id', 'resume')
-                .single();
-
-            if (resumeData && resumeData.path) {
-                await supabase.storage.from('resumes').remove([resumeData.path]);
-            }
-
-            await supabase.from('settings').delete().eq('id', 'resume');
-            
-            setResumeUrl(null);
-            alert("Resume deleted.");
-        } catch (error) {
-            console.error("Delete error:", error);
-            alert("Failed to delete resume. It may have already been removed from storage.");
-            await supabase.from('settings').delete().eq('id', 'resume');
-            setResumeUrl(null);
-        }
-    };
 
     if (authLoading) {
         return <div className="min-h-screen flex items-center justify-center text-slate-400">Loading Admin Secure Area...</div>;
@@ -341,26 +266,55 @@ const AdminFeedback = () => {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
+                <div className="flex overflow-x-auto hide-scrollbar gap-2 sm:gap-4 mb-8 border-b border-slate-200 dark:border-slate-800 pb-4">
                     <button 
                         onClick={() => setActiveTab('requests')}
-                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'requests' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'requests' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Client Requests ({requests.length})
                     </button>
                     <button 
                         onClick={() => setActiveTab('feedback')}
-                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'feedback' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'feedback' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Feedback ({feedbacks.length})
                     </button>
                     <button 
+                        onClick={() => setActiveTab('projects')}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'projects' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                    >
+                        Projects
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('experience')}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'experience' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                    >
+                        Experience
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('skills')}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'skills' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                    >
+                        Skills
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('articles')}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'articles' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                    >
+                        Blog
+                    </button>
+                    <button 
                         onClick={() => setActiveTab('resume')}
-                        className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'resume' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                        className={`shrink-0 px-6 py-3 rounded-2xl font-black text-xs sm:text-sm uppercase tracking-widest transition-all ${activeTab === 'resume' ? 'bg-cyan-500 text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                     >
                         Resume Manager
                     </button>
                 </div>
+
+                {activeTab === 'projects' && <AdminProjects />}
+                {activeTab === 'experience' && <AdminExperience />}
+                {activeTab === 'skills' && <AdminSkills />}
+                {activeTab === 'articles' && <AdminArticles />}
 
                 {activeTab === 'requests' && (
                     <div className="grid gap-6">
@@ -497,57 +451,7 @@ const AdminFeedback = () => {
                     </div>
                 )}
 
-                {activeTab === 'resume' && (
-                    <div className="glass dark:glass-dark p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border-white/20 dark:border-slate-700/50 max-w-2xl mx-auto">
-                        <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-6">Resume Manager</h2>
-                        
-                        <div className="mb-10 p-6 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl">
-                            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center text-cyan-500">
-                                        <FaFilePdf size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-slate-900 dark:text-white">Current Resume Live</h3>
-                                        <a href={resumeUrl || "/resumes/ChinnaDurai_Resume_v1.pdf"} target="_blank" rel="noopener noreferrer" className="text-cyan-500 text-sm hover:underline">
-                                            View Live Resume {resumeUrl ? "(Custom Upload)" : "(Default)"}
-                                        </a>
-                                    </div>
-                                </div>
-                                {resumeUrl && (
-                                    <button
-                                        onClick={handleDeleteResume}
-                                        className="p-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all"
-                                        title="Delete Custom Resume"
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-
-                        <form onSubmit={handleResumeUpload} className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Upload New Resume (PDF)</label>
-                                <input
-                                    type="file"
-                                    accept=".pdf"
-                                    onChange={(e) => setResumeFile(e.target.files[0])}
-                                    className="w-full p-4 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-cyan-500/10 file:text-cyan-500 hover:file:bg-cyan-500 hover:file:text-white file:transition-all cursor-pointer"
-                                />
-                            </div>
-                            
-                            <button
-                                type="submit"
-                                disabled={!resumeFile || isUploading}
-                                className="w-full py-4 bg-cyan-500 text-white font-black uppercase tracking-widest rounded-2xl hover:bg-cyan-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                            >
-                                <FaUpload />
-                                {isUploading ? 'Uploading...' : 'Upload & Publish Resume'}
-                            </button>
-                        </form>
-                    </div>
-                )}
+                {activeTab === 'resume' && <AdminResumes />}
             </div>
 
             {/* Email Reply Modal */}
@@ -609,4 +513,4 @@ const AdminFeedback = () => {
     );
 };
 
-export default AdminFeedback;
+export default AdminDashboard;

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
 import Education from './components/Education/Education';
 import Skills from './components/Skills/Skills';
-import GitHub from './components/GitHub/GitHub';
 import Projects from './components/Projects/Projects';
 import LiveProjects from './components/Projects/LiveProjects';
 import Testimonials from './components/Testimonials/Testimonials';
@@ -13,10 +13,13 @@ import Feedback from './components/Feedback/Feedback';
 import Certifications from './components/Certifications/Certifications';
 import Services from './components/Services/Services';
 import Experience from './components/Experience/Experience';
+import HomeBlog from './components/HomeBlog/HomeBlog';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
-import AdminFeedback from './pages/AdminFeedback';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import BlogList from './pages/Blog/BlogList';
+import ArticleView from './pages/Blog/ArticleView';
 import './App.css';
 
 function App() {
@@ -68,6 +71,15 @@ function App() {
 
   return (
     <div className={`App bg-slate-50 dark:bg-slate-950 min-h-screen text-slate-900 dark:text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-900 dark:selection:text-cyan-200 transition-all duration-1000 ease-in-out relative overflow-hidden`}>
+      <Helmet>
+        <title>Chinna durai | Full Stack Developer & UI/UX Designer</title>
+        <meta name="description" content="Portfolio of Chinna durai, a Full Stack Developer & UI/UX Designer specializing in scalable, performant web and mobile applications." />
+        <meta name="keywords" content="Chinna durai, Full Stack Developer, React, Next.js, Node.js, UI/UX Designer, Freelancer" />
+        <meta property="og:title" content="Chinna durai | Full Stack Developer" />
+        <meta property="og:description" content="Portfolio of Chinna durai, a Full Stack Developer & UI/UX Designer specializing in scalable, performant web and mobile applications." />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Helmet>
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       
       <Routes>
@@ -83,19 +95,21 @@ function App() {
             <About />
             <Education />
             <Skills />
-            <GitHub />
             <Projects />
             <LiveProjects />
             <Experience />
             <Testimonials />
+            <HomeBlog />
             <Feedback />
             <Certifications />
             <Services />
             <Contact />
           </main>
         } />
-        <Route path="/admin-feedback" element={<AdminFeedback />} />
-        <Route path="/admin" element={<AdminFeedback />} />
+        <Route path="/admin-feedback" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:id" element={<ArticleView />} />
       </Routes>
 
       <Footer />

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaArrowRight, FaExternalLinkAlt } from "react-icons/fa";
 import ProjectModal from "./ProjectModal";
+import { supabase } from "../../supabase";
 
 const projects = [
     {
@@ -63,6 +64,28 @@ const item = {
 
 const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(null);
+    const [dbProjects, setDbProjects] = useState([]);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                if (data && data.length > 0) {
+                    setDbProjects(data);
+                }
+            } catch (error) {
+                console.error("Error fetching projects:", error);
+            }
+        };
+        fetchProjects();
+    }, []);
+
+    const displayProjects = dbProjects.length > 0 ? dbProjects : projects;
 
     return (
         <section id="projects" className="py-24 relative overflow-hidden">
@@ -88,25 +111,24 @@ const Projects = () => {
                         </p>
                     </div>
 
-                    <motion.div
+                    <motion.div 
                         variants={container}
                         initial="hidden"
                         whileInView="show"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+                        viewport={{ once: true, margin: "-100px" }}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
-                        {projects.map((project, index) => (
+                        {displayProjects.map((project, index) => (
                             <motion.div
-                                key={index}
+                                key={project.id || index}
                                 variants={item}
-                                whileHover={{ y: -12 }}
                                 className="glass dark:glass-dark rounded-[2.5rem] overflow-hidden border-white/20 dark:border-slate-700/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all group flex flex-col h-full cursor-pointer p-3"
                                 onClick={() => setSelectedProject(project)}
                             >
                                 <div className="h-64 overflow-hidden relative rounded-[2rem]">
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
                                     <img
-                                        src={project.image}
+                                        src={project.image_url || project.image}
                                         alt={project.title}
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
                                     />

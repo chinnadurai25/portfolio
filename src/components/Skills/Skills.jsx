@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "../../supabase";
 
 const skills = [
     { name: "React", level: 90, color: "bg-cyan-400" },
@@ -13,6 +14,34 @@ const skills = [
 ];
 
 const Skills = () => {
+    const [dbSkills, setDbSkills] = useState([]);
+
+    useEffect(() => {
+        const fetchSkills = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('skills')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                if (data && data.length > 0) {
+                    setDbSkills(data);
+                }
+            } catch (error) {
+                console.error("Error fetching skills:", error);
+            }
+        };
+        fetchSkills();
+    }, []);
+
+    const displaySkills = dbSkills.length > 0 ? dbSkills.map(s => ({
+        name: s.name,
+        level: s.level || 85,
+        color: s.color || "bg-cyan-500",
+        category: s.category
+    })) : skills;
+
     return (
         <section id="skills" className="py-24 relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
@@ -38,9 +67,9 @@ const Skills = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {skills.map((skill, index) => (
+                        {displaySkills.map((skill, index) => (
                             <motion.div
-                                key={skill.name}
+                                key={skill.name || index}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}

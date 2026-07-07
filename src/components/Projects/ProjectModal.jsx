@@ -30,7 +30,7 @@ const ProjectModal = ({ project, onClose }) => {
 
                     <div className="relative h-64 md:h-80 w-full">
                         <img
-                            src={project.image}
+                            src={project.image_url || project.image}
                             alt={project.title}
                             className="w-full h-full object-cover"
                         />
@@ -81,7 +81,7 @@ const ProjectModal = ({ project, onClose }) => {
                                     <h4 className="text-lg font-semibold text-white mb-4">Project Links</h4>
                                     <div className="space-y-3">
                                         <a
-                                            href={project.github}
+                                            href={project.github_url || project.github}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="flex items-center gap-3 w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors border border-slate-600"
@@ -89,9 +89,9 @@ const ProjectModal = ({ project, onClose }) => {
                                             <FaGithub className="text-xl" />
                                             <span className="font-medium">View Code</span>
                                         </a>
-                                        {project.live && project.live !== "#" && (
+                                        {(project.live_url || project.live) && (project.live_url !== "#" && project.live !== "#") && (
                                             <a
-                                                href={project.live}
+                                                href={project.live_url || project.live}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-3 w-full p-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg transition-colors shadow-lg shadow-cyan-500/20"

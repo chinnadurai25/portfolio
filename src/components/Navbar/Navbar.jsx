@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
-import { FaSun, FaMoon } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaSun, FaMoon, FaGlobe } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = ({ theme, toggleTheme }) => {
+    const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -23,12 +26,18 @@ const Navbar = ({ theme, toggleTheme }) => {
         }
     });
 
+    const toggleLanguage = () => {
+        const newLang = i18n.language === 'en' ? 'ta' : 'en';
+        i18n.changeLanguage(newLang);
+    };
+
     const navLinks = [
-        { name: "About", to: "about" },
-        { name: "Skills", to: "skills" },
-        { name: "Projects", to: "projects" },
-        { name: "Experience", to: "experience" },
-        { name: "Contact", to: "contact" },
+        { name: t('nav.about'), to: "about" },
+        { name: t('nav.skills'), to: "skills" },
+        { name: t('nav.projects'), to: "projects" },
+        { name: t('nav.experience'), to: "experience" },
+        { name: t('nav.blog'), to: "/blog", isRoute: true },
+        { name: t('nav.contact'), to: "contact" },
     ];
 
     return (
@@ -62,18 +71,40 @@ const Navbar = ({ theme, toggleTheme }) => {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center space-x-1">
                     {navLinks.map((link) => (
-                        <a
-                            key={link.name}
-                            href={`#${link.to}`}
-                            className="relative px-5 py-2 text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-300 text-sm font-black uppercase tracking-[0.2em] group/link"
-                        >
-                            <span className="relative z-10">{link.name}</span>
-                            <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-cyan-500 transition-all duration-300 group-hover/link:w-2/3"></span>
-                        </a>
+                        link.isRoute ? (
+                            <Link
+                                key={link.name}
+                                to={link.to}
+                                className="relative px-5 py-2 text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-300 text-sm font-black uppercase tracking-[0.2em] group/link"
+                            >
+                                <span className="relative z-10">{link.name}</span>
+                                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-cyan-500 transition-all duration-300 group-hover/link:w-2/3"></span>
+                            </Link>
+                        ) : (
+                            <a
+                                key={link.name}
+                                href={window.location.pathname === '/' ? `#${link.to}` : `/#${link.to}`}
+                                className="relative px-5 py-2 text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all duration-300 text-sm font-black uppercase tracking-[0.2em] group/link"
+                            >
+                                <span className="relative z-10">{link.name}</span>
+                                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-cyan-500 transition-all duration-300 group-hover/link:w-2/3"></span>
+                            </a>
+                        )
                     ))}
                     
                     <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-4"></div>
                     
+                    <button
+                        onClick={toggleLanguage}
+                        className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-500 focus:outline-none group active:scale-90 border border-transparent hover:border-cyan-500/30 shadow-inner flex items-center justify-center gap-2"
+                        title={i18n.language === 'en' ? 'Switch to Tamil' : 'Switch to English'}
+                    >
+                        <FaGlobe className="text-cyan-500 w-4 h-4 group-hover:rotate-12 transition-transform" />
+                        <span className="text-xs font-black uppercase text-slate-600 dark:text-slate-300">{i18n.language === 'en' ? 'EN' : 'TA'}</span>
+                    </button>
+
+                    <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+
                     <button
                         onClick={toggleTheme}
                         className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-500 focus:outline-none group active:scale-90 border border-transparent hover:border-cyan-500/30 shadow-inner"
@@ -87,7 +118,14 @@ const Navbar = ({ theme, toggleTheme }) => {
                 </div>
 
                 {/* Mobile Menu Button */}
-                <div className="md:hidden flex items-center space-x-4">
+                <div className="md:hidden flex items-center space-x-2">
+                    <button
+                        onClick={toggleLanguage}
+                        className="px-3 py-2 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 transition-colors focus:outline-none border border-slate-200 dark:border-slate-700 flex items-center gap-1"
+                    >
+                        <span className="text-xs font-black uppercase text-slate-600 dark:text-slate-300">{i18n.language === 'en' ? 'EN' : 'TA'}</span>
+                    </button>
+
                     <button
                         onClick={toggleTheme}
                         className="p-2.5 rounded-xl bg-slate-100/50 dark:bg-slate-800/50 transition-colors focus:outline-none border border-slate-200 dark:border-slate-700"
@@ -130,17 +168,28 @@ const Navbar = ({ theme, toggleTheme }) => {
                         <div className="glass dark:glass-dark rounded-[2.5rem] p-8 shadow-2xl border-white/20 dark:border-slate-700/50">
                             <div className="flex flex-col space-y-4">
                                 {navLinks.map((link, i) => (
-                                    <motion.a
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.1 }}
-                                        key={link.name}
-                                        href={`#${link.to}`}
-                                        className="px-6 py-4 text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-all font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-cyan-50 dark:hover:bg-cyan-900/30 border border-transparent hover:border-cyan-500/10 text-center"
-                                        onClick={() => setIsOpen(false)}
-                                    >
-                                        {link.name}
-                                    </motion.a>
+                                    link.isRoute ? (
+                                        <Link
+                                            key={link.name}
+                                            to={link.to}
+                                            className="block px-6 py-4 text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-all font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-cyan-50 dark:hover:bg-cyan-900/30 border border-transparent hover:border-cyan-500/10 text-center"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    ) : (
+                                        <motion.a
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: i * 0.1 }}
+                                            key={link.name}
+                                            href={window.location.pathname === '/' ? `#${link.to}` : `/#${link.to}`}
+                                            className="block px-6 py-4 text-slate-900 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-all font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-cyan-50 dark:hover:bg-cyan-900/30 border border-transparent hover:border-cyan-500/10 text-center"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            {link.name}
+                                        </motion.a>
+                                    )
                                 ))}
                             </div>
                         </div>

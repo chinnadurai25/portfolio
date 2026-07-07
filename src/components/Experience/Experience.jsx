@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "../../supabase";
 
 const experiences = [
     {
@@ -12,6 +13,29 @@ const experiences = [
 ];
 
 const Experience = () => {
+    const [dbExperiences, setDbExperiences] = useState([]);
+
+    useEffect(() => {
+        const fetchExperiences = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('experience')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                if (data && data.length > 0) {
+                    setDbExperiences(data);
+                }
+            } catch (error) {
+                console.error("Error fetching experience:", error);
+            }
+        };
+        fetchExperiences();
+    }, []);
+
+    const displayExperiences = dbExperiences.length > 0 ? dbExperiences : experiences;
+
     return (
         <section id="experience" className="py-24 relative overflow-hidden">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/5 blur-[120px] pointer-events-none -z-10 animate-pulse"></div>
@@ -37,9 +61,9 @@ const Experience = () => {
                         {/* Vertical Line */}
                         <div className="absolute left-0 md:left-1/2 md:-ml-0.5 w-0.5 h-full bg-slate-200 dark:bg-slate-800"></div>
 
-                        {experiences.map((exp, index) => (
+                        {displayExperiences.map((exp, index) => (
                             <motion.div
-                                key={exp.id}
+                                key={exp.id || index}
                                 initial={{ opacity: 0, y: 50 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
@@ -55,7 +79,7 @@ const Experience = () => {
                                     <div className={`p-8 glass dark:glass-dark rounded-[2rem] border-white/20 dark:border-slate-700/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all ${index % 2 === 0 ? "md:text-right" : "md:text-left"
                                         }`}>
                                         <span className="inline-block px-4 py-1 rounded-full bg-cyan-500/10 dark:bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 text-xs font-black uppercase tracking-widest mb-4">
-                                            {exp.period}
+                                            {exp.duration || exp.period}
                                         </span>
                                         <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1 tracking-tight">{exp.role}</h3>
                                         <h4 className="text-lg font-bold text-slate-500 dark:text-slate-400 mb-4">{exp.company}</h4>

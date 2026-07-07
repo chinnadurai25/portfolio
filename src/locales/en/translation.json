@@ -1,0 +1,18 @@
+{
+    "hero": {
+      "greeting": "Hello, I'm",
+      "name": "CHINNA DURAI",
+      "roles": ["Full Stack Developer", "UI/UX Designer", "Freelancer"],
+      "description": "I build exceptional and accessible digital experiences for the web. Specialized in building high-quality, modern applications.",
+      "view_work": "View My Work",
+      "contact_me": "Contact Me"
+    },
+    "nav": {
+      "about": "About",
+      "skills": "Skills",
+      "projects": "Projects",
+      "experience": "Experience",
+      "blog": "Blog",
+      "contact": "Contact"
+    }
+}
