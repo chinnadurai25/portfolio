@@ -103,7 +103,7 @@ const Projects = () => {
                             Portfolio
                         </h2>
                         <h3 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">
-                            Featured Projects
+                            Live Projects
                         </h3>
                         <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mb-8"></div>
                         <p className="text-slate-600 dark:text-slate-400 max-w-2xl text-lg font-light">
