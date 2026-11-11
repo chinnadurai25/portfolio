@@ -1,28 +1,16 @@
-const CACHE_NAME = 'portfolio-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/favicon.ico',
-  '/manifest.json'
-];
-
+// Service worker to ensure fresh cache and prevent stale bundle white screens
 self.addEventListener('install', event => {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
-  );
+  // Always fetch fresh from network
+  event.respondWith(fetch(event.request));
 });

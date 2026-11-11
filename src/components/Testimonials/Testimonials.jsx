@@ -103,7 +103,7 @@ const Testimonials = () => {
                             </p>
 
                             <div className="flex gap-1.5 pt-6 border-t border-slate-100 dark:border-slate-800/50">
-                                {[...Array(item.rating)].map((_, i) => (
+                                {[...Array(Math.max(0, Math.min(5, Math.floor(Number(item.rating) || 5))))].map((_, i) => (
                                     <FaStar key={i} className="text-cyan-500 drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]" size={14} />
                                 ))}
                             </div>

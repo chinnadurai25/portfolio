@@ -38,7 +38,7 @@ const ProjectModal = ({ project, onClose }) => {
                         <div className="absolute bottom-6 left-6 md:left-10">
                             <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">{project.title}</h3>
                             <div className="flex flex-wrap gap-2">
-                                {project.tags.map(tag => (
+                                {(Array.isArray(project.tags) ? project.tags : (typeof project.tags === 'string' ? project.tags.split(',') : [])).map(tag => (
                                     <span key={tag} className="text-xs font-medium px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                                         {tag}
                                     </span>
@@ -66,7 +66,7 @@ const ProjectModal = ({ project, onClose }) => {
                                         <FaLayerGroup className="text-cyan-400" /> Tech Stack
                                     </h4>
                                     <div className="flex flex-wrap gap-3">
-                                        {project.tags.map((tag, i) => (
+                                        {(Array.isArray(project.tags) ? project.tags : (typeof project.tags === 'string' ? project.tags.split(',') : [])).map((tag, i) => (
                                             <div key={i} className="flex items-center gap-2 bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600">
                                                 <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
                                                 <span className="text-slate-200">{tag}</span>

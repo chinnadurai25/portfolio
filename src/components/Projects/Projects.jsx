@@ -134,7 +134,7 @@ const Projects = () => {
                                     />
                                     <div className="absolute bottom-6 left-6 right-6 z-20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
                                         <div className="flex gap-2">
-                                            {project.tags.slice(0, 2).map(tag => (
+                                            {(Array.isArray(project.tags) ? project.tags : (typeof project.tags === 'string' ? project.tags.split(',') : [])).slice(0, 2).map(tag => (
                                                 <span key={tag} className="text-[10px] px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white border border-white/30 uppercase tracking-widest font-bold">
                                                     {tag}
                                                 </span>
